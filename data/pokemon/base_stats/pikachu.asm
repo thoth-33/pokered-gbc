@@ -7,11 +7,7 @@
 	db 190 ; catch rate
 	db 82 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/pikachu.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/pikachu.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw PikachuPicFront, PikachuPicBack
 
 	db THUNDERSHOCK, GROWL, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -25,4 +21,4 @@ ENDC
 	     SUBSTITUTE,   FLASH
 	; end
 
-	db BANK(PikachuPicFront)
+	db 0 ; padding

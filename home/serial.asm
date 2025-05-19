@@ -47,7 +47,7 @@ Serial::
 	pop de
 	pop bc
 	pop af
-	ret
+	reti
 
 ; hl = send data
 ; de = receive data

@@ -7,11 +7,7 @@
 	db 190 ; catch rate
 	db 100 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/seel.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/seel.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw SeelPicFront, SeelPicBack
 
 	db HEADBUTT, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -24,4 +20,4 @@ ENDC
 	     REST,         SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db BANK(SeelPicFront)
+	db 0 ; padding

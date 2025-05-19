@@ -1,4 +1,4 @@
-PrintWaitingText_orig: ; Name changed so color hack can hijack this
+PrintWaitingText::
 	hlcoord 3, 10
 	ld b, 1
 	ld c, 11

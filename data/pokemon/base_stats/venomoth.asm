@@ -7,11 +7,7 @@
 	db 75 ; catch rate
 	db 138 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/venomoth.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/venomoth.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw VenomothPicFront, VenomothPicBack
 
 	db TACKLE, DISABLE, POISONPOWDER, LEECH_LIFE ; level 1 learnset
@@ -24,4 +20,4 @@ ENDC
 	     SWIFT,        REST,         PSYWAVE,      SUBSTITUTE
 	; end
 
-	db BANK(VenomothPicFront)
+	db 0 ; padding

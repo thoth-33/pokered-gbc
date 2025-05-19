@@ -7,11 +7,7 @@
 	db 45 ; catch rate
 	db 137 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/jynx.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/jynx.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw JynxPicFront, JynxPicBack
 
 	db POUND, LOVELY_KISS, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -26,4 +22,4 @@ ENDC
 	     SUBSTITUTE
 	; end
 
-	db BANK(JynxPicFront)
+	db 0 ; padding

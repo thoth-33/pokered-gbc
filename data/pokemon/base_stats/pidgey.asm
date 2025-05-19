@@ -7,11 +7,7 @@
 	db 255 ; catch rate
 	db 55 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/pidgey.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/pidgey.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw PidgeyPicFront, PidgeyPicBack
 
 	db GUST, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -23,4 +19,4 @@ ENDC
 	     SWIFT,        SKY_ATTACK,   REST,         SUBSTITUTE,   FLY
 	; end
 
-	db BANK(PidgeyPicFront)
+	db 0 ; padding

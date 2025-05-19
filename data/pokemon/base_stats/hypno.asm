@@ -7,11 +7,7 @@
 	db 75 ; catch rate
 	db 165 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/hypno.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/hypno.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw HypnoPicFront, HypnoPicBack
 
 	db POUND, HYPNOSIS, DISABLE, CONFUSION ; level 1 learnset
@@ -26,4 +22,4 @@ ENDC
 	     FLASH
 	; end
 
-	db BANK(HypnoPicFront)
+	db 0 ; padding

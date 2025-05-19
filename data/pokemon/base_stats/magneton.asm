@@ -7,11 +7,7 @@
 	db 60 ; catch rate
 	db 161 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/magneton.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/magneton.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw MagnetonPicFront, MagnetonPicBack
 
 	db TACKLE, SONICBOOM, THUNDERSHOCK, NO_MOVE ; level 1 learnset
@@ -24,4 +20,4 @@ ENDC
 	     SUBSTITUTE,   FLASH
 	; end
 
-	db BANK(MagnetonPicFront)
+	db 0 ; padding

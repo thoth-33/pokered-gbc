@@ -7,11 +7,7 @@
 	db 190 ; catch rate
 	db 102 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/drowzee.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/drowzee.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw DrowzeePicFront, DrowzeePicBack
 
 	db POUND, HYPNOSIS, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -25,4 +21,4 @@ ENDC
 	     THUNDER_WAVE, PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   FLASH
 	; end
 
-	db BANK(DrowzeePicFront)
+	db 0 ; padding

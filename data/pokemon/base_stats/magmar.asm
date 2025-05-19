@@ -7,11 +7,7 @@
 	db 45 ; catch rate
 	db 167 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/magmar.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/magmar.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw MagmarPicFront, MagmarPicBack
 
 	db EMBER, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -25,4 +21,4 @@ ENDC
 	     PSYWAVE,      SUBSTITUTE,   STRENGTH
 	; end
 
-	db BANK(MagmarPicFront)
+	db 0 ; padding

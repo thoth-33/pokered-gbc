@@ -42,7 +42,7 @@ PrepareOakSpeech:
 OakSpeech:
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
-	ld a, 0 ; BANK(Music_Routes2)
+	ld a, BANK(Music_Routes2)
 	ld c, a
 	ld a, MUSIC_ROUTES2
 	call PlayMusic
@@ -61,18 +61,9 @@ OakSpeech:
 	call PrepareForSpecialWarp
 	xor a
 	ldh [hTileAnimations], a
-IF GEN_2_GRAPHICS
-	ld a, PAL_OAK
-ELSE
-	ld a, PAL_BROWNMON
-ENDC
-	call GotPalID ; HAX
-	nop
-	nop
-	nop
-	;ld a, [wStatusFlags6]
-	;bit BIT_DEBUG_MODE, a
-	;jp nz, .skipSpeech
+	ld a, [wStatusFlags6]
+	bit BIT_DEBUG_MODE, a
+	jp nz, .skipSpeech
 	ld de, ProfOakPic
 	lb bc, BANK(ProfOakPic), $00
 	call IntroDisplayPicCenteredOrUpperRight
@@ -80,8 +71,7 @@ ENDC
 	ld hl, OakSpeechText1
 	call PrintText
 	call GBFadeOutToWhite
-	;call ClearScreen
-	call GetNidorinoPalID ; HAX
+	call ClearScreen
 	ld a, NIDORINO
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
@@ -92,7 +82,7 @@ ENDC
 	ld hl, OakSpeechText2
 	call PrintText
 	call GBFadeOutToWhite
-	call GetRedPalID ; HAX
+	call ClearScreen
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $00
 	call IntroDisplayPicCenteredOrUpperRight
@@ -101,7 +91,7 @@ ENDC
 	call PrintText
 	call ChoosePlayerName
 	call GBFadeOutToWhite
-	call GetRivalPalID ; HAX
+	call ClearScreen
 	ld de, Rival1Pic
 	lb bc, BANK(Rival1Pic), $00
 	call IntroDisplayPicCenteredOrUpperRight
@@ -111,7 +101,7 @@ ENDC
 	call ChooseRivalName
 .skipSpeech
 	call GBFadeOutToWhite
-	call GetRedPalID ; HAX
+	call ClearScreen
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $00
 	call IntroDisplayPicCenteredOrUpperRight
@@ -146,15 +136,14 @@ ENDC
 	call ResetPlayerSpriteData
 	ldh a, [hLoadedROMBank]
 	push af
-;	ld a, 0 ; BANK(Music_PalletTown)
-;	ld [wAudioROMBank], a
-;	ld [wAudioSavedROMBank], a
-
+	ld a, BANK(Music_PalletTown)
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, 10
-	ld [wMusicFade], a
-	xor a
-	ld [wMusicFadeID], a
-
+	ld [wAudioFadeOutControl], a
+	ld a, SFX_STOP_ALL_MUSIC
+	ld [wNewSoundID], a
+	call PlaySound
 	pop af
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a

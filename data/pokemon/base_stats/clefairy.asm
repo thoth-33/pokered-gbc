@@ -7,11 +7,7 @@
 	db 150 ; catch rate
 	db 68 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/clefairy.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/clefairy.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw ClefairyPicFront, ClefairyPicBack
 
 	db POUND, GROWL, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -27,4 +23,4 @@ ENDC
 	     SUBSTITUTE,   STRENGTH,     FLASH
 	; end
 
-	db BANK(ClefairyPicFront)
+	db 0 ; padding

@@ -21,8 +21,7 @@ GBPalNormal::
 ; Reset BGP and OBP0.
 	ld a, %11100100 ; 3210
 	ldh [rBGP], a
-;	ld a, %11010000
-	ld a, %11100100	; HAX
+	ld a, %11010000 ; 3100
 	ldh [rOBP0], a
 	ret
 
@@ -46,7 +45,7 @@ GetHealthBarColor::
 ; Return at hl the palette of
 ; an HP bar e pixels long.
 	ld a, e
-	cp 24 ; HAX: changed to match crystal (yellow should mean <1/2 health)
+	cp 27
 	ld d, 0 ; green
 	jr nc, .gotColor
 	cp 10

@@ -7,11 +7,7 @@
 	db 75 ; catch rate
 	db 176 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/dewgong.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/dewgong.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw DewgongPicFront, DewgongPicBack
 
 	db HEADBUTT, GROWL, AURORA_BEAM, NO_MOVE ; level 1 learnset
@@ -24,4 +20,4 @@ ENDC
 	     SKULL_BASH,   REST,         SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db BANK(DewgongPicFront)
+	db 0 ; padding

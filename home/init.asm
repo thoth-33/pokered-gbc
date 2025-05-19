@@ -1,4 +1,4 @@
-SoftReset_orig:: ; HAX: "SoftReset" label moved elsewhere (calls this after)
+SoftReset::
 	call StopAllSounds
 	call GBPalWhiteOut
 	ld c, 32
@@ -97,9 +97,9 @@ DEF rLCDC_DEFAULT EQU (1 << rLCDC_ENABLE) | (1 << rLCDC_WINDOW_TILEMAP) | (1 << 
 
 	predef LoadSGB
 
-;	ld a, 0 ; BANK(SFX_Shooting_Star)
-;	ld [wAudioROMBank], a
-;	ld [wAudioSavedROMBank], a
+	ld a, BANK(SFX_Shooting_Star)
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, $9c
 	ldh [hAutoBGTransferDest + 1], a
 	xor a
@@ -126,12 +126,12 @@ ClearVram::
 
 
 StopAllSounds::
-;	ld a, 0 ; BANK("Audio Engine 1")
-;	ld [wAudioROMBank], a
-;	ld [wAudioSavedROMBank], a
+	ld a, BANK("Audio Engine 1")
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	xor a
-	ld [wMusicFade], a
-	ld [wMusicFadeID], a
+	ld [wAudioFadeOutControl], a
+	ld [wNewSoundID], a
 	ld [wLastMusicSoundID], a
 	dec a
 	jp PlaySound

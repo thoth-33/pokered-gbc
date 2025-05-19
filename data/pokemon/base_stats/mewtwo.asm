@@ -7,11 +7,7 @@
 	db 3 ; catch rate
 	db 220 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/mewtwo.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/mewtwo.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw MewtwoPicFront, MewtwoPicBack
 
 	db CONFUSION, DISABLE, SWIFT, PSYCHIC_M ; level 1 learnset
@@ -28,4 +24,4 @@ ENDC
 	     FLASH
 	; end
 
-	db BANK(MewtwoPicFront)
+	db 0 ; padding

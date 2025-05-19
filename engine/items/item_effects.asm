@@ -991,7 +991,7 @@ ItemUseMedicine:
 .notFullHP ; if the pokemon's current HP doesn't equal its max HP
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
-;	ld [wChannelSoundIDs + CHAN5], a
+	ld [wChannelSoundIDs + CHAN5], a
 	push hl
 	push de
 	ld bc, wPartyMon1MaxHP - (wPartyMon1HP + 1)
@@ -1736,16 +1736,11 @@ ItemUsePokeFlute:
 	and $80
 	jr nz, .skipMusic
 	call WaitForSoundToFinish ; wait for sound to end
-
-	ld a, SFX_POKEFLUTE_IN_BATTLE
-	call PlaySound
-	call WaitForSoundToFinish
-;	farcall Music_PokeFluteInBattle ; play in-battle pokeflute music
-;.musicWaitLoop ; wait for music to finish playing
-;	ld a, [wChannelSoundIDs + CHAN7]
-;	and a ; music off?
-;	jr nz, .musicWaitLoop
-
+	farcall Music_PokeFluteInBattle ; play in-battle pokeflute music
+.musicWaitLoop ; wait for music to finish playing
+	ld a, [wChannelSoundIDs + CHAN7]
+	and a ; music off?
+	jr nz, .musicWaitLoop
 .skipMusic
 	ld hl, FluteWokeUpText
 	jp PrintText
@@ -1807,12 +1802,12 @@ PlayedFluteHadEffectText:
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
 	ld a, SFX_POKEFLUTE
-	ld c, 0 ; BANK(SFX_Pokeflute)
-	call PlaySound
-;.musicWaitLoop ; wait for music to finish playing
-;	ld a, [wChannelSoundIDs + CHAN3]
-;	cp SFX_POKEFLUTE
-;	jr z, .musicWaitLoop
+	ld c, BANK(SFX_Pokeflute)
+	call PlayMusic
+.musicWaitLoop ; wait for music to finish playing
+	ld a, [wChannelSoundIDs + CHAN3]
+	cp SFX_POKEFLUTE
+	jr z, .musicWaitLoop
 	call PlayDefaultMusic ; start playing normal music again
 .done
 	jp TextScriptEnd ; end text
@@ -1928,7 +1923,6 @@ ItemUseItemfinder:
 	and a
 	jp nz, ItemUseNotTime
 	call ItemUseReloadOverworldData
-	call DelayFrame
 	farcall HiddenItemNear ; check for hidden items
 	ld hl, ItemfinderFoundNothingText
 	jr nc, .printText ; if no hidden items

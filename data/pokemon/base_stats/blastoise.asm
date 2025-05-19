@@ -7,11 +7,7 @@
 	db 45 ; catch rate
 	db 210 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/blastoise.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/blastoise.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw BlastoisePicFront, BlastoisePicBack
 
 	db TACKLE, TAIL_WHIP, BUBBLE, WATER_GUN ; level 1 learnset
@@ -26,4 +22,4 @@ ENDC
 	     SURF,         STRENGTH
 	; end
 
-	db BANK(BlastoisePicFront)
+	db 0 ; padding

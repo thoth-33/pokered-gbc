@@ -7,11 +7,7 @@
 	db 60 ; catch rate
 	db 173 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/weezing.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/weezing.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw WeezingPicFront, WeezingPicBack
 
 	db TACKLE, SMOG, SLUDGE, NO_MOVE ; level 1 learnset
@@ -23,4 +19,4 @@ ENDC
 	     REST,         EXPLOSION,    SUBSTITUTE
 	; end
 
-	db BANK(WeezingPicFront)
+	db 0 ; padding

@@ -7,11 +7,7 @@
 	db 190 ; catch rate
 	db 75 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/venonat.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/venonat.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw VenonatPicFront, VenonatPicBack
 
 	db TACKLE, DISABLE, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -23,4 +19,4 @@ ENDC
 	     BIDE,         REST,         PSYWAVE,      SUBSTITUTE
 	; end
 
-	db BANK(VenonatPicFront)
+	db 0 ; padding

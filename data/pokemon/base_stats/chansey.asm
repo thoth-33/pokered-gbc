@@ -7,11 +7,7 @@
 	db 30 ; catch rate
 	db 255 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/chansey.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/chansey.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw ChanseyPicFront, ChanseyPicBack
 
 	db POUND, DOUBLESLAP, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -28,4 +24,4 @@ ENDC
 	     FLASH
 	; end
 
-	db BANK(ChanseyPicFront)
+	db 0 ; padding

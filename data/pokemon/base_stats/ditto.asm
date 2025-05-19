@@ -7,11 +7,7 @@
 	db 35 ; catch rate
 	db 61 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/ditto.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/ditto.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw DittoPicFront, DittoPicBack
 
 	db TRANSFORM, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -21,4 +17,4 @@ ENDC
 	tmhm
 	; end
 
-	db BANK(DittoPicFront)
+	db 0 ; padding

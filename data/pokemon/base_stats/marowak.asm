@@ -7,11 +7,7 @@
 	db 75 ; catch rate
 	db 124 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/marowak.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/marowak.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw MarowakPicFront, MarowakPicBack
 
 	db BONE_CLUB, GROWL, LEER, FOCUS_ENERGY ; level 1 learnset
@@ -26,4 +22,4 @@ ENDC
 	     STRENGTH
 	; end
 
-	db BANK(MarowakPicFront)
+	db 0 ; padding

@@ -7,11 +7,7 @@
 	db 45 ; catch rate
 	db 175 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/kangaskhan.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/kangaskhan.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw KangaskhanPicFront, KangaskhanPicBack
 
 	db COMET_PUNCH, RAGE, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -26,4 +22,4 @@ ENDC
 	     ROCK_SLIDE,   SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db BANK(KangaskhanPicFront)
+	db 0 ; padding

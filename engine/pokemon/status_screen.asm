@@ -105,16 +105,11 @@ StatusScreen:
 	push af
 	xor a
 	ldh [hTileAnimations], a
-IF GEN_2_GRAPHICS
-	hlcoord 19, 3
-	lb bc, 2, 8
-ELSE
 	hlcoord 19, 1
 	lb bc, 6, 10
-ENDC
 	call DrawLineBox ; Draws the box around name, HP and status
-	hlcoord 2, 7
-	nop
+	ld de, -6
+	add hl, de
 	ld [hl], "<DOT>"
 	dec hl
 	ld [hl], "№"
@@ -129,7 +124,7 @@ ENDC
 	ld hl, wStatusScreenHPBarColor
 	call GetHealthBarColor
 	ld b, SET_PAL_STATUS_SCREEN
-	call StatusScreenHook ; HAX: Draws EXP bar if GEN_2_GRAPHICS is set
+	call RunPaletteCommand
 	hlcoord 16, 6
 	ld de, wLoadedMonStatus
 	call PrintStatusCondition
@@ -317,14 +312,8 @@ StatusScreen2:
 	hlcoord 9, 2
 	lb bc, 5, 10
 	call ClearScreenArea ; Clear under name
-IF GEN_2_GRAPHICS
-	call StatusScreen2Hook
-	nop
-	nop
-ELSE
 	hlcoord 19, 3
 	ld [hl], $78
-ENDC
 	hlcoord 0, 8
 	ld b, 8
 	ld c, 18

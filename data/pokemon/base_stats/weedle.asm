@@ -7,11 +7,7 @@
 	db 255 ; catch rate
 	db 52 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/weedle.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/weedle.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw WeedlePicFront, WeedlePicBack
 
 	db POISON_STING, STRING_SHOT, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -21,4 +17,4 @@ ENDC
 	tmhm
 	; end
 
-	db BANK(WeedlePicFront)
+	db 0 ; padding

@@ -7,11 +7,7 @@
 	db 45 ; catch rate
 	db 197 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/jolteon.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/jolteon.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw JolteonPicFront, JolteonPicBack
 
 	db TACKLE, SAND_ATTACK, QUICK_ATTACK, THUNDERSHOCK ; level 1 learnset
@@ -24,4 +20,4 @@ ENDC
 	     THUNDER_WAVE, SUBSTITUTE,   FLASH
 	; end
 
-	db BANK(JolteonPicFront)
+	db 0 ; padding

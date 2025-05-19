@@ -7,11 +7,7 @@
 	db 255 ; catch rate
 	db 20 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/magikarp.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/magikarp.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw MagikarpPicFront, MagikarpPicBack
 
 	db SPLASH, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -21,4 +17,4 @@ ENDC
 	tmhm
 	; end
 
-	db BANK(MagikarpPicFront)
+	db 0 ; padding

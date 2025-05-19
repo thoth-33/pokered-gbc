@@ -7,11 +7,7 @@
 	db 200 ; catch rate
 	db 73 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/abra.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/abra.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw AbraPicFront, AbraPicBack
 
 	db TELEPORT, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -25,4 +21,4 @@ ENDC
 	     PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   FLASH
 	; end
 
-	db BANK(AbraPicFront)
+	db 0 ; padding

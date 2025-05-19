@@ -7,11 +7,7 @@
 	db 45 ; catch rate
 	db 212 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/exeggutor.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/exeggutor.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw ExeggutorPicFront, ExeggutorPicBack
 
 	db BARRAGE, HYPNOSIS, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -24,4 +20,4 @@ ENDC
 	     REST,         PSYWAVE,      EXPLOSION,    SUBSTITUTE,   STRENGTH
 	; end
 
-	db BANK(ExeggutorPicFront)
+	db 0 ; padding

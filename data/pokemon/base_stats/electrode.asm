@@ -7,11 +7,7 @@
 	db 60 ; catch rate
 	db 150 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/electrode.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/electrode.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw ElectrodePicFront, ElectrodePicBack
 
 	db TACKLE, SCREECH, SONICBOOM, NO_MOVE ; level 1 learnset
@@ -24,4 +20,4 @@ ENDC
 	     THUNDER_WAVE, EXPLOSION,    SUBSTITUTE,   FLASH
 	; end
 
-	db BANK(ElectrodePicFront)
+	db 0 ; padding

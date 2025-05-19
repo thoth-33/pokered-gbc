@@ -7,11 +7,7 @@
 	db 45 ; catch rate
 	db 211 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/tauros.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/tauros.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw TaurosPicFront, TaurosPicBack
 
 	db TACKLE, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -25,4 +21,4 @@ ENDC
 	     STRENGTH
 	; end
 
-	db BANK(TaurosPicFront)
+	db 0 ; padding

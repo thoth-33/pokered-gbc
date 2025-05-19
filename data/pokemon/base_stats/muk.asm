@@ -7,11 +7,7 @@
 	db 75 ; catch rate
 	db 157 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/muk.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/muk.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw MukPicFront, MukPicBack
 
 	db POUND, DISABLE, POISON_GAS, NO_MOVE ; level 1 learnset
@@ -23,4 +19,4 @@ ENDC
 	     SELFDESTRUCT, FIRE_BLAST,   REST,         EXPLOSION,    SUBSTITUTE
 	; end
 
-	db BANK(MukPicFront)
+	db 0 ; padding

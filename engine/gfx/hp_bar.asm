@@ -143,7 +143,7 @@ UpdateHPBar_AnimateHPBar:
 	push af
 	push de
 	ld d, $6
-	call DrawHPBarWithColor ; HAX: call changed to update color as well
+	call DrawHPBar
 	ld c, 2
 	call DelayFrames
 	pop de

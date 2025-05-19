@@ -7,11 +7,7 @@
 	db 75 ; catch rate
 	db 128 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/parasect.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/parasect.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw ParasectPicFront, ParasectPicBack
 
 	db SCRATCH, STUN_SPORE, LEECH_LIFE, NO_MOVE ; level 1 learnset
@@ -24,4 +20,4 @@ ENDC
 	     REST,         SUBSTITUTE,   CUT
 	; end
 
-	db BANK(ParasectPicFront)
+	db 0 ; padding

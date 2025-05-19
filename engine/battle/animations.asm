@@ -204,7 +204,7 @@ PlayAnimation:
 	push hl
 	push de
 	call GetMoveSound
-	call nc, PlayBattleSound
+	call PlaySound
 	pop de
 	pop hl
 .skipPlayingSound
@@ -248,9 +248,7 @@ PlayAnimation:
 	ldh a, [rOBP0]
 	push af
 	ld a, [wAnimPalette]
-;	ldh [rOBP0], a	; HAX
-	nop
-	nop
+	ldh [rOBP0], a
 	call LoadMoveAnimationTiles
 	vc_hook Reduce_move_anim_flashing_Mega_Punch_Self_Destruct_Explosion
 	call LoadSubanimation
@@ -354,32 +352,25 @@ GetSubanimationTransform2:
 	ret
 
 ; loads tile patterns for battle animations
-; I HAXed with this function by shaving off a few bytes in order to
-; call a function to load sprite palettes.
 LoadMoveAnimationTiles:
 	ld a, [wWhichBattleAnimTileset]
 	add a
 	add a
+	ld hl, MoveAnimationTilesPointers
 	ld e, a
 	ld d, 0
-
-	; HAX: Load corresponding palettes as well
-	call _LoadAnimationTilesetPalettes
-
-	ld hl, MoveAnimationTilesPointers
 	add hl, de
 	ld a, [hli]
 	ld [wTempTilesetNumTiles], a ; number of tiles
-	ld c, a
 	ld a, [hli]
 	ld e, a
-	ld d, [hl] ; de = address of tileset
+	ld a, [hl]
+	ld d, a ; de = address of tileset
 	ld hl, vSprites tile $31
 	ld b, BANK(MoveAnimationTiles0) ; ROM bank
+	ld a, [wTempTilesetNumTiles]
+	ld c, a ; number of tiles
 	jp CopyVideoData ; load tileset
-
-	; Padding to prevent data shifting
-	nop
 
 MACRO anim_tileset
 	db \1
@@ -573,13 +564,9 @@ SetAnimationPalette:
 	ld b, $f0
 .next
 	ld a, b
-	;ldh [rOBP0], a ; HAX: don't mess with these palettes in-battle
-	nop
-	nop
+	ldh [rOBP0], a
 	ld a, $6c
-	;ldh [rOBP1], a ; HAX
-	nop
-	nop
+	ldh [rOBP1], a
 	ret
 .notSGB
 	ld a, $e4
@@ -595,7 +582,7 @@ PlaySubanimation:
 	cp NO_MOVE - 1
 	jr z, .skipPlayingSound
 	call GetMoveSound
-	call nc, PlayBattleSound
+	call PlaySound
 .skipPlayingSound
 	ld hl, wShadowOAM
 	ld a, l
@@ -2226,44 +2213,25 @@ GetMoveSound:
 .next
 	ld a, [wEnemyMonSpecies]
 .Continue
-
-	push af
-	ld a, 1
-	ld [wSFXDontWait], a
-	pop af
-	call PlayCry
-	xor a
-	ld [wSFXDontWait], a
-	ld a, b
-	scf
-	ret
-;	push hl
-;	call GetCryData
-;	ld b, a
-;	pop hl
-;	ld a, [wFrequencyModifier]
-;	add [hl]
-;	ld [wFrequencyModifier], a
-;	inc hl
-;	ld a, [wTempoModifier]
-;	add [hl]
-;	ld [wTempoModifier], a
-;	jr .done
-
+	push hl
+	call GetCryData
+	ld b, a
+	pop hl
+	ld a, [wFrequencyModifier]
+	add [hl]
+	ld [wFrequencyModifier], a
+	inc hl
+	ld a, [wTempoModifier]
+	add [hl]
+	ld [wTempoModifier], a
+	jr .done
 .NotCryMove
-	push bc
 	ld a, [hli]
-	ld c, a
-	ld b, 0
+	ld [wFrequencyModifier], a
 	ld a, [hli]
-	add $80
-	ld e, a
-	ld a, 0
-	adc 0
-	ld d, a
-	pop af
+	ld [wTempoModifier], a
 .done
-	and a
+	ld a, b
 	ret
 
 IsCryMove:
@@ -2344,9 +2312,7 @@ AnimationLeavesFalling:
 	ldh a, [rOBP0]
 	push af
 	ld a, [wAnimPalette]
-;	ldh [rOBP0], a ; HAX
-	nop
-	nop
+	ldh [rOBP0], a
 	ld d, $37 ; leaf tile
 	ld a, 3 ; number of leaves
 	ld [wNumFallingObjects], a
@@ -2503,10 +2469,12 @@ FallingObjects_InitialMovementData:
 
 AnimationShakeEnemyHUD:
 ; Shakes the enemy HUD.
-	call SpriteifyPlayerPokemon
-	REPT 9
-	nop
-	ENDR
+
+; Make a copy of the back pic's tile patterns in sprite tile pattern VRAM.
+	ld de, vBackPic
+	ld hl, vSprites
+	ld bc, 7 * 7
+	call CopyVideoData
 
 	xor a
 	ldh [hSCX], a
@@ -2674,20 +2642,20 @@ PlayApplyingAttackSound:
 	and $7f
 	ret z
 	cp 10
-	ld bc, $20
-	ld de, $30 + $80
-	ld a, SFX_DAMAGE
+	ld a, $20
+	ld b, $30
+	ld c, SFX_DAMAGE
 	jr z, .playSound
-	ld bc, $e0
-	ld de, $ff + $80
-	ld a, SFX_SUPER_EFFECTIVE
+	ld a, $e0
+	ld b, $ff
+	ld c, SFX_SUPER_EFFECTIVE
 	jr nc, .playSound
-	ld bc, $50
-	ld de, $1 + $80
-	ld a, SFX_NOT_VERY_EFFECTIVE
+	ld a, $50
+	ld b, $1
+	ld c, SFX_NOT_VERY_EFFECTIVE
 .playSound
-;	ld [wFrequencyModifier], a
-;	ld a, b
-;	ld [wTempoModifier], a
-;	ld a, c
-	jp PlayBattleSound
+	ld [wFrequencyModifier], a
+	ld a, b
+	ld [wTempoModifier], a
+	ld a, c
+	jp PlaySound

@@ -7,11 +7,7 @@
 	db 90 ; catch rate
 	db 171 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/golbat.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/golbat.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw GolbatPicFront, GolbatPicBack
 
 	db LEECH_LIFE, SCREECH, BITE, NO_MOVE ; level 1 learnset
@@ -23,4 +19,4 @@ ENDC
 	     BIDE,         SWIFT,        REST,         SUBSTITUTE
 	; end
 
-	db BANK(GolbatPicFront)
+	db 0 ; padding

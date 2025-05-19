@@ -7,11 +7,7 @@
 	db 60 ; catch rate
 	db 170 ; base exp
 
-IF GEN_2_GRAPHICS
-	INCBIN "gfx/pokemon/gsfront/seaking.pic", 0, 1 ; sprite dimensions
-ELSE
 	INCBIN "gfx/pokemon/front/seaking.pic", 0, 1 ; sprite dimensions
-ENDC
 	dw SeakingPicFront, SeakingPicBack
 
 	db PECK, TAIL_WHIP, SUPERSONIC, NO_MOVE ; level 1 learnset
@@ -24,4 +20,4 @@ ENDC
 	     REST,         SUBSTITUTE,   SURF
 	; end
 
-	db BANK(SeakingPicFront)
+	db 0 ; padding
