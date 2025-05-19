@@ -33,7 +33,7 @@ AnimateHallOfFame:
 .skipInc
 	ld a, $90
 	ldh [hWY], a
-	ld c, BANK(Music_HallOfFame)
+	ld c, 0 ; BANK(Music_HallOfFame)
 	ld a, MUSIC_HALL_OF_FAME
 	call PlayMusic
 	ld hl, wPartySpecies
@@ -195,10 +195,22 @@ HoFLoadPlayerPics:
 	ld de, RedPicBack
 	ld a, BANK(RedPicBack)
 	call UncompressSpriteFromDE
+
+IF GEN_2_GRAPHICS ; Use uncompressed red sprite
+	ld a, $66
+	ld c, a
+	ld de, vBackPic
+	call LoadUncompressedSpriteData
+	nop
+	nop
+	nop
+	nop
+ELSE
 	predef ScaleSpriteByTwo
 	ld de, vBackPic
 	call InterlaceMergeSpriteBuffers
 	ld c, $1
+ENDC
 
 HoFLoadMonPlayerPicTileIDs:
 ; c = base tile ID
@@ -281,8 +293,7 @@ HoFRecordMonInfo:
 
 HoFFadeOutScreenAndMusic:
 	ld a, 10
-	ld [wAudioFadeOutCounterReloadValue], a
-	ld [wAudioFadeOutCounter], a
-	ld a, $ff
-	ld [wAudioFadeOutControl], a
+	ld [wMusicFade], a
+	xor a
+	ld [wMusicFadeID], a
 	jp GBFadeOutToWhite

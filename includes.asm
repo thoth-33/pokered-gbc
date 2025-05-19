@@ -1,3 +1,6 @@
+DEF GEN_2_GRAPHICS EQU 1
+DEF GEN_2_MUSIC    EQU 1
+
 INCLUDE "macros/asserts.asm"
 INCLUDE "macros/const.asm"
 INCLUDE "macros/predef.asm"
@@ -8,10 +11,12 @@ INCLUDE "macros/gfx.asm"
 INCLUDE "macros/coords.asm"
 INCLUDE "macros/vc.asm"
 
-INCLUDE "macros/scripts/audio.asm"
+;INCLUDE "macros/scripts/audio.asm"
 INCLUDE "macros/scripts/maps.asm"
 INCLUDE "macros/scripts/events.asm"
 INCLUDE "macros/scripts/text.asm"
+
+INCLUDE "macros/color.asm"
 
 INCLUDE "constants/charmap.asm"
 INCLUDE "constants/hardware_constants.asm"
@@ -44,7 +49,7 @@ INCLUDE "constants/map_object_constants.asm"
 INCLUDE "constants/hide_show_constants.asm"
 INCLUDE "constants/sprite_set_constants.asm"
 INCLUDE "constants/credits_constants.asm"
-INCLUDE "constants/audio_constants.asm"
+;INCLUDE "constants/audio_constants.asm"
 INCLUDE "constants/music_constants.asm"
 INCLUDE "constants/tileset_constants.asm"
 INCLUDE "constants/event_constants.asm"
@@ -57,3 +62,7 @@ ENDC
 IF DEF(_BLUE_VC)
 INCLUDE "vc/pokeblue.constants.asm"
 ENDC
+
+INCLUDE "color/wram.asm"
+INCLUDE "color/data/map_palette_constants.asm"
+

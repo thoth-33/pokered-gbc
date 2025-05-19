@@ -700,7 +700,7 @@ PlayMapChangeSound::
 	ld a, [wMapPalOffset]
 	and a
 	ret nz
-	jp GBFadeOutToBlack
+	jp GBFadeOutToWhite ; HAX: Fade to white instead of black. Looks nicer IMO.
 
 CheckIfInOutsideMap::
 ; If the player is in an outside map (a town or route), set the z flag
@@ -770,12 +770,11 @@ HandleBlackOut::
 	jp SpecialEnterMap
 
 StopMusic::
-	ld [wAudioFadeOutControl], a
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
+	ld [wMusicFade], a
+	xor a
+	ld [wMusicFadeID], a
 .wait
-	ld a, [wAudioFadeOutControl]
+	ld a, [wMusicFade]
 	and a
 	jr nz, .wait
 	jp StopAllSounds
@@ -1243,9 +1242,16 @@ CollisionCheckOnLand::
 	call CheckTilePassable
 	jr nc, .noCollision
 .collision
-	ld a, [wChannelSoundIDs + CHAN5]
-	cp SFX_COLLISION ; check if collision sound is already playing
-	jr z, .setCarry
+
+;	ld a, [wChannelSoundIDs + CHAN5]
+;	cp SFX_COLLISION ; check if collision sound is already playing
+;	jr z, .setCarry
+
+	; ch5 on?
+	ld hl, wChannel5 + wChannel1Flags1 - wChannel1 ; + CHANNEL_FLAGS1
+	bit 0, [hl]
+	jr nz, .setCarry
+
 	ld a, SFX_COLLISION
 	call PlaySound ; play collision sound (if it's not already playing)
 .setCarry
@@ -1920,9 +1926,16 @@ CollisionCheckOnWater::
 	jr z, .stopSurfing ; stop surfing if the tile is passable
 	jr .loop
 .collision
-	ld a, [wChannelSoundIDs + CHAN5]
-	cp SFX_COLLISION ; check if collision sound is already playing
-	jr z, .setCarry
+
+;	ld a, [wChannelSoundIDs + CHAN5]
+;	cp SFX_COLLISION ; check if collision sound is already playing
+;	jr z, .setCarry
+
+	; ch5 on?
+	ld hl, wChannel5 + wChannel1Flags1 - wChannel1 ; + CHANNEL_FLAGS1
+	bit 0, [hl]
+	jr nz, .setCarry
+
 	ld a, SFX_COLLISION
 	call PlaySound ; play collision sound (if it's not already playing)
 .setCarry
@@ -2273,6 +2286,10 @@ LoadMapHeader::
 	ld a, [hli]
 	ld [wMapMusicSoundID], a ; music 1
 	ld a, [hl]
+
+; give vanilla red a fair shot at running our savs
+	ld a, BANK("Audio Engine 1")
+
 	ld [wMapMusicROMBank], a ; music 2
 	pop af
 	ldh [hLoadedROMBank], a
@@ -2312,31 +2329,15 @@ LoadMapData::
 	call LoadTileBlockMap
 	call LoadTilesetTilePatternData
 	call LoadCurrentMapView
-; copy current map view to VRAM
-	hlcoord 0, 0
-	ld de, vBGMap0
-	ld b, SCREEN_HEIGHT
-.vramCopyLoop
-	ld c, SCREEN_WIDTH
-.vramCopyInnerLoop
-	ld a, [hli]
-	ld [de], a
-	inc e
-	dec c
-	jr nz, .vramCopyInnerLoop
-	ld a, BG_MAP_WIDTH - SCREEN_WIDTH
-	add e
-	ld e, a
-	jr nc, .noCarry
-	inc d
-.noCarry
-	dec b
-	jr nz, .vramCopyLoop
+
+	ld b, SET_PAL_OVERWORLD
+	call RunPaletteCommand ; HAX: this function call was moved to be above _LoadMapVramAndColors
+; copy current map view + corresponding palettes to VRAM
+	call _LoadMapVramAndColors ; HAX
+
 	ld a, $01
 	ld [wUpdateSpritesEnabled], a
 	call EnableLCD
-	ld b, SET_PAL_OVERWORLD
-	call RunPaletteCommand
 	call LoadPlayerSpriteGraphics
 	ld a, [wStatusFlags6]
 	and (1 << BIT_FLY_WARP) | (1 << BIT_DUNGEON_WARP)
@@ -2344,13 +2345,18 @@ LoadMapData::
 	ld a, [wStatusFlags7]
 	bit BIT_NO_MAP_MUSIC, a
 	jr nz, .restoreRomBank
-	call UpdateMusic6Times
+;	call UpdateMusic6Times
 	call PlayDefaultMusicFadeOutCurrent
 .restoreRomBank
 	pop af
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	ret
+
+; HAX: Padding to prevent data shifting
+rept $17
+	nop
+endr
 
 ; function to switch to the ROM bank that a map is stored in
 ; Input: a = map number
