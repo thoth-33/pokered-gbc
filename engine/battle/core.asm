@@ -2015,6 +2015,7 @@ DisplayBattleMenu::
 	call DisplayTextBoxID
  ; handle menu input if it's not the old man tutorial
 	ld a, [wBattleType]
+	ASSERT BATTLE_TYPE_OLD_MAN == 1
 	dec a
 	jp nz, .handleBattleMenuInput
 ; the following happens for the old man tutorial
@@ -2643,7 +2644,7 @@ SelectMenuItem:
 	ld b, $0
 	add hl, bc
 	ld a, [hl]
-	and $3f
+	and PP_MASK
 	jr z, .noPP
 	ld a, [wPlayerDisabledMove]
 	swap a
@@ -2723,7 +2724,7 @@ AnyMoveToSelect:
 	or [hl]
 	inc hl
 	or [hl]
-	and $3f
+	and PP_MASK
 	ret nz
 	jr .noMovesLeft
 .handleDisabledMove
@@ -2877,7 +2878,7 @@ PrintMenuItem:
 	ld hl, wBattleMonPP
 	add hl, bc
 	ld a, [hl]
-	and $3f
+	and PP_MASK
 	ld [wBattleMenuCurrentPP], a
 ; print TYPE/<type> and <curPP>/<maxPP>
 	hlcoord 1, 9
@@ -4070,18 +4071,18 @@ CheckForDisobedience:
 	ld hl, wBattleMonPP
 	push hl
 	ld a, [hli]
-	and $3f
+	and PP_MASK
 	ld b, a
 	ld a, [hli]
-	and $3f
+	and PP_MASK
 	add b
 	ld b, a
 	ld a, [hli]
-	and $3f
+	and PP_MASK
 	add b
 	ld b, a
 	ld a, [hl]
-	and $3f
+	and PP_MASK
 	add b
 	pop hl
 	push af
@@ -4090,7 +4091,7 @@ CheckForDisobedience:
 	ld b, $0
 	add hl, bc
 	ld a, [hl]
-	and $3f
+	and PP_MASK
 	ld b, a
 	pop af
 	cp b
@@ -4447,7 +4448,7 @@ CalculateDamage:
 ; Multi-hit attacks may or may not have 0 bp.
 	cp TWO_TO_FIVE_ATTACKS_EFFECT
 	jr z, .skipbp
-	cp $1e
+	cp EFFECT_1E
 	jr z, .skipbp
 
 ; Calculate OHKO damage based on remaining HP.
@@ -5156,7 +5157,7 @@ MetronomePickMove:
 	and a
 	jr z, .pickMoveLoop
 	cp STRUGGLE
-	assert NUM_ATTACKS == STRUGGLE ; random numbers greater than STRUGGLE are not moves
+	ASSERT NUM_ATTACKS == STRUGGLE ; random numbers greater than STRUGGLE are not moves
 	jr nc, .pickMoveLoop
 	cp METRONOME
 	jr z, .pickMoveLoop
@@ -6681,7 +6682,7 @@ BattleRandom:
 	add hl, bc
 	inc a
 	ld [wLinkBattleRandomNumberListIndex], a
-	cp 9
+	cp SERIAL_RNS_LENGTH - 1
 	ld a, [hl]
 	pop bc
 	pop hl
@@ -6704,7 +6705,7 @@ ENDC
 	ld [wLinkBattleRandomNumberListIndex], a
 
 	ld hl, wLinkBattleRandomNumberList
-	ld b, 9
+	ld b, SERIAL_RNS_LENGTH - 1
 .loop
 	ld a, [hl]
 	ld c, a
@@ -6754,7 +6755,7 @@ HandleExplodingAnimation:
 	ret nz
 	ld a, ANIMATIONTYPE_SHAKE_SCREEN_HORIZONTALLY_LIGHT
 	ld [wAnimationType], a
-	assert ANIMATIONTYPE_SHAKE_SCREEN_HORIZONTALLY_LIGHT == MEGA_PUNCH
+	ASSERT ANIMATIONTYPE_SHAKE_SCREEN_HORIZONTALLY_LIGHT == MEGA_PUNCH
 	; ld a, MEGA_PUNCH
 ; fallthrough
 PlayMoveAnimation:

@@ -170,7 +170,7 @@ SetPal_Overworld:
 	ld [wDefaultPaletteCommand], a
 	ret
 .PokemonTowerOrAgatha
-	ld a, PAL_GREYMON - 1
+	ld a, PAL_GRAYMON - 1
 	jr .town
 .caveOrBruno
 	ld a, PAL_CAVE - 1
@@ -271,7 +271,7 @@ BadgeBlkDataLengths:
 
 DeterminePaletteID:
 	bit TRANSFORMED, a ; a is battle status 3
-	ld a, PAL_GREYMON  ; if the mon has used Transform, use Ditto's palette
+	ld a, PAL_GRAYMON  ; if the mon has used Transform, use Ditto's palette
 	ret nz
 	ld a, [hl]
 DeterminePaletteIDOutOfBattle:
@@ -396,11 +396,11 @@ LoadSGB:
 	ret nc
 	ld a, 1
 	ld [wOnSGB], a
-	ld a, [wGBC]
+	ld a, [wOnCGB]
 	and a
-	jr z, .notGBC
+	jr z, .notCGB
 	ret
-.notGBC
+.notCGB
 	di
 	call PrepareSuperNintendoVRAMTransfer
 	ei
@@ -563,21 +563,21 @@ Wait7000:
 	ret
 
 SendSGBPackets:
-	ld a, [wGBC]
+	ld a, [wOnCGB]
 	and a
-	jr z, .notGBC
+	jr z, .notCGB
 	push de
-	call InitGBCPalettes
+	call InitCGBPalettes
 	pop hl
 	call EmptyFunc3
 	ret
-.notGBC
+.notCGB
 	push de
 	call SendSGBPacket
 	pop hl
 	jp SendSGBPacket
 
-InitGBCPalettes:
+InitCGBPalettes:
 	ld a, $80 ; index 0 with auto-increment
 	ldh [rBGPI], a
 	inc hl
